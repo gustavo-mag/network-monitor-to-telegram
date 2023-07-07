@@ -11,28 +11,27 @@ import os
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
+# Enable logging
+logging.basicConfig(filename='network_monitor.log', level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s')
+
+# Enable logging
+logging.basicConfig(filename='network_monitor.log', level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s')
+
 # Check internet connection with retries
 def check_internet_connection(retries=50, delay=5):
     for _ in range(retries):
         try:
             response = requests.get('http://www.google.com')
             if response.status_code == 200:
+                logging.info('Internet connection established.')
                 return True
         except requests.ConnectionError:
             pass
+        logging.warning('Internet connection not available.')
         time.sleep(delay)
     return False
-
-# Enable logging
-logging.basicConfig(filename='network_monitor.log', level=logging.INFO,
-                    format='%(asctime)s %(levelname)s %(message)s')
-
-# Check internet connection and log timestamps
-if not check_internet_connection():
-    logging.warning('Internet connection not available.')
-    print("No internet connection.")
-else:
-    logging.info('Internet connection established.')
 
 # Check for required dependencies
 dependencies = ['netifaces', 'prettytable', 'requests']
