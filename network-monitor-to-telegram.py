@@ -29,6 +29,10 @@ def check_internet_connection(retries=50, delay=5):
         time.sleep(delay)
     return False
 
+# Check internet connection
+if not check_internet_connection():
+    print("No internet connection.")
+
 # Check for required dependencies
 dependencies = ['netifaces', 'prettytable', 'requests']
 missing_dependencies = []
