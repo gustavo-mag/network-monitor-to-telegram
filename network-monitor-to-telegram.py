@@ -15,10 +15,6 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 logging.basicConfig(filename='network_monitor.log', level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(message)s')
 
-# Enable logging
-logging.basicConfig(filename='network_monitor.log', level=logging.INFO,
-                    format='%(asctime)s %(levelname)s %(message)s')
-
 # Check internet connection with retries
 def check_internet_connection(retries=50, delay=5):
     for _ in range(retries):
