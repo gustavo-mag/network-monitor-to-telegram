@@ -4,9 +4,10 @@ from prettytable import PrettyTable
 import requests
 import logging
 import datetime
+import os
 
-TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN'
-TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID'
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 # Check for required dependencies
 dependencies = ['netifaces', 'prettytable', 'requests']
@@ -74,17 +75,25 @@ def print_network_info():
     print(table)
     return table.get_string()
 
+def get_public_ip():
+    response = requests.get('https://api.ipify.org?format=json')
+    if response.status_code == 200:
+        return response.json().get('ip')
+    return ""
+
 def format_network_info():
     interfaces = get_interfaces_with_private_ip()
     connection_type = get_connection_type()
-    main_ip = get_main_ip()
+    gateway_ip = get_main_ip()
+    public_ip = get_public_ip()
     info = "🗓️ [ {} ] | [ {} ]\n\n".format(
-        datetime.datetime.now().strftime("%H:%M:%S"), 
+        datetime.datetime.now().strftime("%H:%M:%S"),
         datetime.datetime.now().strftime("%Y.%m.%d")
     )
     info += "💻 <b>Hostname:</b> {}\n\n".format(get_hostname())
     info += "🟢 <b>Connection Type:</b> {}\n".format(connection_type)
-    info += "ℹ️ <b>Main IP:</b> {}\n\n".format(main_ip)
+    info += "🌐 <b>Public IP:</b> {}\n".format(public_ip)  # Updated line
+    info += "ℹ️ <b>Gateway IP:</b> {}\n\n".format(gateway_ip)
 
     for interface in interfaces:
         private_ip = get_private_ip(interface)
