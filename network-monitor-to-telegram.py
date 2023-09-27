@@ -7,6 +7,7 @@ import datetime
 import subprocess
 import time
 import os
+from rich import print
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
